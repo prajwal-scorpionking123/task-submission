@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import DataTableComponent from "./DataTableComponent";
+import axios from "axios";
+const App = () => {
+  const [users, setUsers] = useState(null);
+  // const [isBuzy,setIsBuzy] = useState(false)
+  //fetching data
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/users");
+      console.log(response.data);
+       setUsers(response.data);
+       
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-function App() {
+  //getting data whenever component loaded
+  useEffect(() => {
+    fetchData();
+  }, []);
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <DataTableComponent users={users}></DataTableComponent>
     </div>
   );
-}
+};
 
 export default App;
